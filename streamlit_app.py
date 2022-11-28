@@ -57,7 +57,7 @@ streamlit.header("ADD FRUIT TO LIST")
 
 def insert_row_sf(fruit_name):
   with my_cnx.cursor() as my_cur:
-    my_cur.execute("INSERT INTO fruit_load_list VALUES ('FROM STREAMLIT')")  
+    my_cur.execute("INSERT INTO fruit_load_list VALUES ('"+fruit_name+"')")  
     return "Thanks for adding "+fruit_name
   
 fruit_name=streamlit.text_input('What fruit would you like to add?')
