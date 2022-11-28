@@ -45,13 +45,21 @@ except URLError as e:
 
 streamlit.stop()
 
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT * FROM fruit_load_list")
-my_data_row = my_cur.fetchall()
+
+
 streamlit.header("The fruit_load_list contains:")
 streamlit.dataframe(my_data_row)
 
-add_my_fruit = streamlit.text_input('What fruit would you like to add?')
-streamlit.write('Thanks for adding ', add_my_fruit)
-my_cur.execute("INSERT INTO fruit_load_list VALUES ('FROM STREAMLIT')")
+def insert_row_sf(fruit_name):
+  with my_cnx_cursor() as my_cur:
+    my_cur.execute("INSERT INTO fruit_load_list VALUES ('FROM STREAMLIT')")  
+    return "Thanks for adding"+fruit_name
+  
+if streamlit.button('Add a fruit to the list'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  back_from_function=insert_row_sf(fruit_name)
+  streamlit.text(back_from_function)
+  
+  
+
+
